@@ -12,7 +12,9 @@ public interface PostsService {
 	
 	public List<PostsDTO> getAllPostsByUserId(Integer userId);
 	
-	public PostsDTO getPostById(Integer postId);
+	public PostsDTO getPostById(Integer id);
+	
+	public PostsDTO getPostByPostId(Integer postId);
 	
 	public List<PostsDTO> getPostByTitleContent(String title);
 	

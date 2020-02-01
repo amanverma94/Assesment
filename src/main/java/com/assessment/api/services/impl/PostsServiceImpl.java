@@ -71,9 +71,15 @@ public class PostsServiceImpl implements PostsService {
 		}
 		return null;
 	}
+	
+	@Override
+	public PostsDTO getPostById(Integer id) {
+		Optional<Posts> post = postRepository.findById(id);
+		return postsMapper.toDto(post.get());
+	}
 
 	@Override
-	public PostsDTO getPostById(Integer postId) {
+	public PostsDTO getPostByPostId(Integer postId) {
 		Optional<Posts> post = postRepository.findByPostId(postId);
 		return postsMapper.toDto(post.get());
 	}
