@@ -1,7 +1,6 @@
 package com.assessment.api.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,24 +11,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author AmanVerma
  */
 @Entity
-@Table(name = "posts")
+@Table(name = "comments")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Posts.findAll", query = "SELECT p FROM Posts p")
-    , @NamedQuery(name = "Posts.findById", query = "SELECT p FROM Posts p WHERE p.id = :id")
-    , @NamedQuery(name = "Posts.findByTitle", query = "SELECT p FROM Posts p WHERE p.title = :title")
-    , @NamedQuery(name = "Posts.findByBody", query = "SELECT p FROM Posts p WHERE p.body = :body")})
-public class Posts implements Serializable {
+    @NamedQuery(name = "Comments.findAll", query = "SELECT c FROM Comments c")
+    , @NamedQuery(name = "Comments.findById", query = "SELECT c FROM Comments c WHERE c.id = :id")
+    , @NamedQuery(name = "Comments.findByName", query = "SELECT c FROM Comments c WHERE c.name = :name")
+    , @NamedQuery(name = "Comments.findByEmail", query = "SELECT c FROM Comments c WHERE c.email = :email")
+    , @NamedQuery(name = "Comments.findByBody", query = "SELECT c FROM Comments c WHERE c.body = :body")})
+public class Comments implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,20 +35,20 @@ public class Posts implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "email")
+    private String email;
     @Column(name = "body")
     private String body;
-    @OneToMany(mappedBy = "postId")
-    private Collection<Comments> commentsCollection;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     @ManyToOne
-    private UserDetails userId;
+    private Posts postId;
 
-    public Posts() {
+    public Comments() {
     }
 
-    public Posts(Integer id) {
+    public Comments(Integer id) {
         this.id = id;
     }
 
@@ -62,12 +60,20 @@ public class Posts implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getBody() {
@@ -78,21 +84,12 @@ public class Posts implements Serializable {
         this.body = body;
     }
 
-    @XmlTransient
-    public Collection<Comments> getCommentsCollection() {
-        return commentsCollection;
+    public Posts getPostId() {
+        return postId;
     }
 
-    public void setCommentsCollection(Collection<Comments> commentsCollection) {
-        this.commentsCollection = commentsCollection;
-    }
-
-    public UserDetails getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UserDetails userId) {
-        this.userId = userId;
+    public void setPostId(Posts postId) {
+        this.postId = postId;
     }
 
     @Override
@@ -105,10 +102,10 @@ public class Posts implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Posts)) {
+        if (!(object instanceof Comments)) {
             return false;
         }
-        Posts other = (Posts) object;
+        Comments other = (Comments) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -117,7 +114,7 @@ public class Posts implements Serializable {
 
     @Override
     public String toString() {
-        return "entitygenerator.Posts[ id=" + id + " ]";
+        return "entitygenerator.Comments[ id=" + id + " ]";
     }
     
 }

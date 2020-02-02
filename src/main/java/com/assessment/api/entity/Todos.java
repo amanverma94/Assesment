@@ -1,7 +1,6 @@
 package com.assessment.api.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,24 +11,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author AmanVerma
  */
 @Entity
-@Table(name = "posts")
+@Table(name = "todos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Posts.findAll", query = "SELECT p FROM Posts p")
-    , @NamedQuery(name = "Posts.findById", query = "SELECT p FROM Posts p WHERE p.id = :id")
-    , @NamedQuery(name = "Posts.findByTitle", query = "SELECT p FROM Posts p WHERE p.title = :title")
-    , @NamedQuery(name = "Posts.findByBody", query = "SELECT p FROM Posts p WHERE p.body = :body")})
-public class Posts implements Serializable {
+    @NamedQuery(name = "Todos.findAll", query = "SELECT t FROM Todos t")
+    , @NamedQuery(name = "Todos.findById", query = "SELECT t FROM Todos t WHERE t.id = :id")
+    , @NamedQuery(name = "Todos.findByTitle", query = "SELECT t FROM Todos t WHERE t.title = :title")
+    , @NamedQuery(name = "Todos.findByCompleted", query = "SELECT t FROM Todos t WHERE t.completed = :completed")})
+public class Todos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,18 +36,16 @@ public class Posts implements Serializable {
     private Integer id;
     @Column(name = "title")
     private String title;
-    @Column(name = "body")
-    private String body;
-    @OneToMany(mappedBy = "postId")
-    private Collection<Comments> commentsCollection;
+    @Column(name = "completed")
+    private Boolean completed;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     private UserDetails userId;
 
-    public Posts() {
+    public Todos() {
     }
 
-    public Posts(Integer id) {
+    public Todos(Integer id) {
         this.id = id;
     }
 
@@ -70,21 +65,12 @@ public class Posts implements Serializable {
         this.title = title;
     }
 
-    public String getBody() {
-        return body;
+    public Boolean getCompleted() {
+        return completed;
     }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    @XmlTransient
-    public Collection<Comments> getCommentsCollection() {
-        return commentsCollection;
-    }
-
-    public void setCommentsCollection(Collection<Comments> commentsCollection) {
-        this.commentsCollection = commentsCollection;
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 
     public UserDetails getUserId() {
@@ -105,10 +91,10 @@ public class Posts implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Posts)) {
+        if (!(object instanceof Todos)) {
             return false;
         }
-        Posts other = (Posts) object;
+        Todos other = (Todos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -117,7 +103,7 @@ public class Posts implements Serializable {
 
     @Override
     public String toString() {
-        return "entitygenerator.Posts[ id=" + id + " ]";
+        return "entitygenerator.Todos[ id=" + id + " ]";
     }
     
 }

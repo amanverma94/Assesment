@@ -1,7 +1,6 @@
 package com.assessment.api.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,24 +11,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author AmanVerma
  */
 @Entity
-@Table(name = "posts")
+@Table(name = "photos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Posts.findAll", query = "SELECT p FROM Posts p")
-    , @NamedQuery(name = "Posts.findById", query = "SELECT p FROM Posts p WHERE p.id = :id")
-    , @NamedQuery(name = "Posts.findByTitle", query = "SELECT p FROM Posts p WHERE p.title = :title")
-    , @NamedQuery(name = "Posts.findByBody", query = "SELECT p FROM Posts p WHERE p.body = :body")})
-public class Posts implements Serializable {
+    @NamedQuery(name = "Photos.findAll", query = "SELECT p FROM Photos p")
+    , @NamedQuery(name = "Photos.findById", query = "SELECT p FROM Photos p WHERE p.id = :id")
+    , @NamedQuery(name = "Photos.findByTitle", query = "SELECT p FROM Photos p WHERE p.title = :title")
+    , @NamedQuery(name = "Photos.findByUrl", query = "SELECT p FROM Photos p WHERE p.url = :url")
+    , @NamedQuery(name = "Photos.findByThumbnailUrl", query = "SELECT p FROM Photos p WHERE p.thumbnailUrl = :thumbnailUrl")})
+public class Photos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,18 +37,18 @@ public class Posts implements Serializable {
     private Integer id;
     @Column(name = "title")
     private String title;
-    @Column(name = "body")
-    private String body;
-    @OneToMany(mappedBy = "postId")
-    private Collection<Comments> commentsCollection;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Column(name = "url")
+    private String url;
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
+    @JoinColumn(name = "album_id", referencedColumnName = "id")
     @ManyToOne
-    private UserDetails userId;
+    private Albums albumId;
 
-    public Posts() {
+    public Photos() {
     }
 
-    public Posts(Integer id) {
+    public Photos(Integer id) {
         this.id = id;
     }
 
@@ -70,29 +68,28 @@ public class Posts implements Serializable {
         this.title = title;
     }
 
-    public String getBody() {
-        return body;
+    public String getUrl() {
+        return url;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    @XmlTransient
-    public Collection<Comments> getCommentsCollection() {
-        return commentsCollection;
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
-    public void setCommentsCollection(Collection<Comments> commentsCollection) {
-        this.commentsCollection = commentsCollection;
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-    public UserDetails getUserId() {
-        return userId;
+    public Albums getAlbumId() {
+        return albumId;
     }
 
-    public void setUserId(UserDetails userId) {
-        this.userId = userId;
+    public void setAlbumId(Albums albumId) {
+        this.albumId = albumId;
     }
 
     @Override
@@ -105,10 +102,10 @@ public class Posts implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Posts)) {
+        if (!(object instanceof Photos)) {
             return false;
         }
-        Posts other = (Posts) object;
+        Photos other = (Photos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -117,7 +114,7 @@ public class Posts implements Serializable {
 
     @Override
     public String toString() {
-        return "entitygenerator.Posts[ id=" + id + " ]";
+        return "entitygenerator.Photos[ id=" + id + " ]";
     }
     
 }

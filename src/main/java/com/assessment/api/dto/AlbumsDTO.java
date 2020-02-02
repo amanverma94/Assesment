@@ -4,10 +4,10 @@ package com.assessment.api.dto;
  *
  * @author AmanVerma
  */
-public class PostsDTO {
+public class AlbumsDTO {
+
 	private Integer id;
 	private String title;
-	private String body;
 	private UserDetailsDTO userId;
 
 	public Integer getId() {
@@ -24,14 +24,6 @@ public class PostsDTO {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
 	}
 
 	public UserDetailsDTO getUserId() {

@@ -22,14 +22,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author AmanVerma
  */
 @Entity
-@Table(name = "posts")
+@Table(name = "albums")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Posts.findAll", query = "SELECT p FROM Posts p")
-    , @NamedQuery(name = "Posts.findById", query = "SELECT p FROM Posts p WHERE p.id = :id")
-    , @NamedQuery(name = "Posts.findByTitle", query = "SELECT p FROM Posts p WHERE p.title = :title")
-    , @NamedQuery(name = "Posts.findByBody", query = "SELECT p FROM Posts p WHERE p.body = :body")})
-public class Posts implements Serializable {
+    @NamedQuery(name = "Albums.findAll", query = "SELECT a FROM Albums a")
+    , @NamedQuery(name = "Albums.findById", query = "SELECT a FROM Albums a WHERE a.id = :id")
+    , @NamedQuery(name = "Albums.findByTitle", query = "SELECT a FROM Albums a WHERE a.title = :title")})
+public class Albums implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,18 +38,16 @@ public class Posts implements Serializable {
     private Integer id;
     @Column(name = "title")
     private String title;
-    @Column(name = "body")
-    private String body;
-    @OneToMany(mappedBy = "postId")
-    private Collection<Comments> commentsCollection;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     private UserDetails userId;
+    @OneToMany(mappedBy = "albumId")
+    private Collection<Photos> photosCollection;
 
-    public Posts() {
+    public Albums() {
     }
 
-    public Posts(Integer id) {
+    public Albums(Integer id) {
         this.id = id;
     }
 
@@ -70,29 +67,21 @@ public class Posts implements Serializable {
         this.title = title;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    @XmlTransient
-    public Collection<Comments> getCommentsCollection() {
-        return commentsCollection;
-    }
-
-    public void setCommentsCollection(Collection<Comments> commentsCollection) {
-        this.commentsCollection = commentsCollection;
-    }
-
     public UserDetails getUserId() {
         return userId;
     }
 
     public void setUserId(UserDetails userId) {
         this.userId = userId;
+    }
+
+    @XmlTransient
+    public Collection<Photos> getPhotosCollection() {
+        return photosCollection;
+    }
+
+    public void setPhotosCollection(Collection<Photos> photosCollection) {
+        this.photosCollection = photosCollection;
     }
 
     @Override
@@ -105,10 +94,10 @@ public class Posts implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Posts)) {
+        if (!(object instanceof Albums)) {
             return false;
         }
-        Posts other = (Posts) object;
+        Albums other = (Albums) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -117,7 +106,7 @@ public class Posts implements Serializable {
 
     @Override
     public String toString() {
-        return "entitygenerator.Posts[ id=" + id + " ]";
+        return "entitygenerator.Albums[ id=" + id + " ]";
     }
     
 }
