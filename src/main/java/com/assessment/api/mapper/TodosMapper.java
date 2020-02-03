@@ -2,10 +2,10 @@ package com.assessment.api.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.assessment.api.dto.PostsDTO;
-import com.assessment.api.entity.Posts;
+import com.assessment.api.dto.TodosDTO;
+import com.assessment.api.entity.Todos;
 
 @Mapper(componentModel = "spring", implementationPackage = "com.assessment.api.mapper.impl")
-public interface PostsMapper extends EntityMapper<PostsDTO, Posts> {
+public interface TodosMapper extends EntityMapper<TodosDTO, Todos> {
 
 }

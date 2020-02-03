@@ -21,11 +21,6 @@ public class PostsContoller {
 	@Autowired
 	private PostsService postsService;
 
-	@PostMapping
-	public void saveAllPostsToDB() {
-		postsService.saveAllPostsToDB();
-	}
-
 	@GetMapping
 	public List<PostsDTO> getAllPosts() {
 		return postsService.getAllPosts();

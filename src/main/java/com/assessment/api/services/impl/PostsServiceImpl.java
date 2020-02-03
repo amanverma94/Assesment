@@ -33,23 +33,9 @@ public class PostsServiceImpl implements PostsService {
 
 	@Autowired
 	private PostsMapper postsMapper;
-	
+
 	@Autowired
 	private UserDetailService userDetailService;
-
-	@Override
-	public void saveAllPostsToDB() {
-		ResponseEntity<PostsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/posts", PostsDTO[].class);
-		List<PostsDTO> objects = Arrays.asList(responseEntity.getBody());
-		for (PostsDTO obj : objects) {
-			Posts posts = new Posts();
-			posts.setTitle(obj.getTitle());
-			posts.setBody(obj.getBody());
-			UserDetails userDetails = userDetailService.getUserDetailsByUserId(obj.getUserId().getId());
-			posts.setUserId(userDetails);
-			postRepository.save(posts);
-		}
-	}
 
 	@Override
 	public List<PostsDTO> getAllPosts() {

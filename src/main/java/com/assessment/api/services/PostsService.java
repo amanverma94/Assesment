@@ -6,8 +6,6 @@ import com.assessment.api.dto.PostsDTO;
 
 public interface PostsService {
 
-	public void saveAllPostsToDB();
-
 	public List<PostsDTO> getAllPosts();
 
 	public List<PostsDTO> getAllPostsByUserId(Integer userId);
