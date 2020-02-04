@@ -60,4 +60,13 @@ public class UserDetailServiceImpl implements UserDetailService {
 		}
 		return userDetailsMapper.toDto(userDetails);
 	}
+
+	@Override
+	public UserDetailsDTO getUserByName(String name) {
+		UserDetails userDetails = userDetailsRepository.findByName(name).get();
+		if(null==userDetails) {
+			return null;
+		}
+		return userDetailsMapper.toDto(userDetails);
+	}
 }

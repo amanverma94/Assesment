@@ -28,4 +28,8 @@ public class UsersContoller {
 		return userDetailService.getUserById(id);
 	}
 
+	@GetMapping("/name/{name}")
+	public UserDetailsDTO getUserByName(@PathVariable String name) {
+		return userDetailService.getUserByName(name);
+	}
 }

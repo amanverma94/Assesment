@@ -97,7 +97,6 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 
 	@Override
 	public void onApplicationEvent(final ContextRefreshedEvent event) {
-		System.out.println("createDB>>>>> " + createDB);
 		if (createDB.equalsIgnoreCase("create")) {
 			saveUsersToDB();
 			saveTodosToDB();

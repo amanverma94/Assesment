@@ -12,4 +12,8 @@ public interface UserDetailService {
 	public List<UserDetailsDTO> getAllUsers();
 	
 	public UserDetailsDTO getUserById(Integer id);
+	
+	public UserDetailsDTO getUserByName(String name);
+	
+	
 }
