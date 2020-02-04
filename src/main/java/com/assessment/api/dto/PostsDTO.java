@@ -8,7 +8,7 @@ public class PostsDTO {
 	private Integer id;
 	private String title;
 	private String body;
-	private UserDetailsDTO userId;
+	private Integer userId;
 
 	public Integer getId() {
 		return id;
@@ -34,11 +34,11 @@ public class PostsDTO {
 		this.body = body;
 	}
 
-	public UserDetailsDTO getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(UserDetailsDTO userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

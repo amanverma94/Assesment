@@ -8,7 +8,7 @@ public class AlbumsDTO {
 
 	private Integer id;
 	private String title;
-	private UserDetailsDTO userId;
+	private Integer user;
 
 	public Integer getId() {
 		return id;
@@ -26,12 +26,12 @@ public class AlbumsDTO {
 		this.title = title;
 	}
 
-	public UserDetailsDTO getUserId() {
-		return userId;
+	public Integer getUser() {
+		return user;
 	}
 
-	public void setUserId(UserDetailsDTO userId) {
-		this.userId = userId;
+	public void setUser(Integer user) {
+		this.user = user;
 	}
 
 }

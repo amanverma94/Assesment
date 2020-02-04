@@ -1,4 +1,4 @@
-package com.assessment.api.JsonMapper;
+package com.assessment.api.BO;
 
 /**
  *

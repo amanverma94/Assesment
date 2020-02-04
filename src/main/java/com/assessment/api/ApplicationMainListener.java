@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.assessment.api.JsonMapper.AlbumsBO;
-import com.assessment.api.JsonMapper.CommentsBO;
-import com.assessment.api.JsonMapper.PhotosBO;
-import com.assessment.api.JsonMapper.PostsBO;
-import com.assessment.api.JsonMapper.TodosBO;
+import com.assessment.api.BO.PhotosBO;
+import com.assessment.api.BO.TodosBO;
+import com.assessment.api.dto.AlbumsDTO;
+import com.assessment.api.dto.CommentsDTO;
+import com.assessment.api.dto.PostsDTO;
 import com.assessment.api.dto.UserDetailsDTO;
 import com.assessment.api.entity.Address;
 import com.assessment.api.entity.Albums;
@@ -151,9 +151,9 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 	}
 
 	private void savePostsToDB() {
-		ResponseEntity<PostsBO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/posts", PostsBO[].class);
-		List<PostsBO> postsBOList = Arrays.asList(responseEntity.getBody());
-		for (PostsBO obj : postsBOList) {
+		ResponseEntity<PostsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/posts", PostsDTO[].class);
+		List<PostsDTO> postsList = Arrays.asList(responseEntity.getBody());
+		for (PostsDTO obj : postsList) {
 			Posts posts = new Posts();
 			posts.setBody(obj.getBody());
 			posts.setTitle(obj.getTitle());
@@ -165,10 +165,10 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 	}
 
 	private void saveCommentsToDB() {
-		ResponseEntity<CommentsBO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/comments",
-				CommentsBO[].class);
-		List<CommentsBO> commentBOList = Arrays.asList(responseEntity.getBody());
-		for (CommentsBO commentDTO : commentBOList) {
+		ResponseEntity<CommentsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/comments",
+				CommentsDTO[].class);
+		List<CommentsDTO> commentsList = Arrays.asList(responseEntity.getBody());
+		for (CommentsDTO commentDTO : commentsList) {
 			Comments comments = new Comments();
 			comments.setBody(commentDTO.getBody());
 			comments.setEmail(commentDTO.getEmail());
@@ -180,13 +180,13 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 	}
 
 	private void saveAlbumsToDB() {
-		ResponseEntity<AlbumsBO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/albums",
-				AlbumsBO[].class);
-		List<AlbumsBO> albumsBOList = Arrays.asList(responseEntity.getBody());
-		for (AlbumsBO albumsBO : albumsBOList) {
+		ResponseEntity<AlbumsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/albums",
+				AlbumsDTO[].class);
+		List<AlbumsDTO> albumsList = Arrays.asList(responseEntity.getBody());
+		for (AlbumsDTO album : albumsList) {
 			Albums albums = new Albums();
-			albums.setTitle(albumsBO.getTitle());
-			UserDetails userDetails = userDetailService.getUserDetailsByUserId(albumsBO.getUserId());
+			albums.setTitle(album.getTitle());
+			UserDetails userDetails = userDetailService.getUserDetailsByUserId(album.getUser());
 			albums.setUserId(userDetails);
 			albumsRepository.save(albums);
 		}

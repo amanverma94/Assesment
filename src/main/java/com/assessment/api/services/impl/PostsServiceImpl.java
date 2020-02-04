@@ -1,13 +1,11 @@
 package com.assessment.api.services.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -90,12 +88,27 @@ public class PostsServiceImpl implements PostsService {
 
 	@Override
 	public void addPost(Integer userId, String title, String body) {
-		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
 		Posts post = new Posts();
+		savePost(userId, title, body, post);
+	}
+
+	private void savePost(Integer userId, String title, String body, Posts post) {
+		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
 		post.setUserId(userDetails);
 		post.setTitle(title);
 		post.setBody(body);
-
 		postRepository.save(post);
+	}
+
+	@Override
+	public void updatePost(Integer id, Integer userId, String title, String body) {
+		Posts post = postRepository.findById(id).get();
+		savePost(userId, title, body, post);
+	}
+
+	@Override
+	public void deletePost(Integer id) {
+		Posts post = postRepository.findById(id).get();
+		postRepository.delete(post);
 	}
 }

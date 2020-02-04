@@ -1,13 +1,15 @@
-package com.assessment.api.JsonMapper;
+package com.assessment.api.BO;
 
 /**
  *
  * @author AmanVerma
  */
-public class PostsBO {
+
+public class TodosBO {
+
 	private Integer id;
 	private String title;
-	private String body;
+	private Boolean completed;
 	private Integer userId;
 
 	public Integer getId() {
@@ -26,12 +28,12 @@ public class PostsBO {
 		this.title = title;
 	}
 
-	public String getBody() {
-		return body;
+	public Boolean getCompleted() {
+		return completed;
 	}
 
-	public void setBody(String body) {
-		this.body = body;
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
 	}
 
 	public Integer getUserId() {

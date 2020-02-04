@@ -10,7 +10,7 @@ public class CommentsDTO {
 	private String name;
 	private String email;
 	private String body;
-	private PostsDTO postId;
+	private Integer postId;
 
 	public Integer getId() {
 		return id;
@@ -44,11 +44,11 @@ public class CommentsDTO {
 		this.body = body;
 	}
 
-	public PostsDTO getPostId() {
+	public Integer getPostId() {
 		return postId;
 	}
 
-	public void setPostId(PostsDTO postId) {
+	public void setPostId(Integer postId) {
 		this.postId = postId;
 	}
 

@@ -17,4 +17,9 @@ public interface PostsService {
 	public List<PostsDTO> getPostByBodyContent(String body);
 
 	public void addPost(Integer userId, String title, String body);
+
+	public void updatePost(Integer id, Integer userId, String title, String body);
+	
+	public void deletePost(Integer id);
+
 }
