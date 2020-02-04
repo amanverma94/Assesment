@@ -31,22 +31,17 @@ public class PostsContoller {
 		return postsService.getPostById(id);
 	}
 
-	@GetMapping("/findByPostId")
-	public PostsDTO getPostByPostId(@RequestParam Integer postId) {
-		return postsService.getPostByPostId(postId);
-	}
-
-	@GetMapping("/findByUserId")
+	@GetMapping("/user/{userId}")
 	public List<PostsDTO> getAllPostsByUserId(@RequestParam Integer userId) {
 		return postsService.getAllPostsByUserId(userId);
 	}
 
-	@GetMapping("/findByTitle")
+	@GetMapping("/title/{title}")
 	public List<PostsDTO> getPostByTitleContent(@RequestParam String title) {
 		return postsService.getPostByTitleContent(title);
 	}
 
-	@GetMapping("/findByBody")
+	@GetMapping("/body/{body}")
 	public List<PostsDTO> getPostByBodyContent(@RequestParam String body) {
 		return postsService.getPostByBodyContent(body);
 	}

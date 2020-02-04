@@ -12,8 +12,6 @@ public interface PostsService {
 
 	public PostsDTO getPostById(Integer id);
 
-	public PostsDTO getPostByPostId(Integer postId);
-
 	public List<PostsDTO> getPostByTitleContent(String title);
 
 	public List<PostsDTO> getPostByBodyContent(String body);

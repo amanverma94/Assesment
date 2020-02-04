@@ -47,6 +47,9 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 	@Value("${external.api.url}")
 	private String externalAPI;
 
+	@Value("${spring.jpa.hibernate.ddl-auto}")
+	private String createDB;
+
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -94,12 +97,15 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 
 	@Override
 	public void onApplicationEvent(final ContextRefreshedEvent event) {
-		saveUsersToDB();
-		saveTodosToDB();
-		savePostsToDB();
-		saveCommentsToDB();
-		saveAlbumsToDB();
-		savePhotosToDB();
+		System.out.println("createDB>>>>> " + createDB);
+		if (createDB.equalsIgnoreCase("create")) {
+			saveUsersToDB();
+			saveTodosToDB();
+			savePostsToDB();
+			saveCommentsToDB();
+			saveAlbumsToDB();
+			savePhotosToDB();
+		}
 	}
 
 	private void saveUsersToDB() {

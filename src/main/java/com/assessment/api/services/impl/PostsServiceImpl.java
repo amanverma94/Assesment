@@ -71,12 +71,6 @@ public class PostsServiceImpl implements PostsService {
 	}
 
 	@Override
-	public PostsDTO getPostByPostId(Integer postId) {
-		Optional<Posts> post = postRepository.findById(postId);
-		return postsMapper.toDto(post.get());
-	}
-
-	@Override
 	public List<PostsDTO> getPostByTitleContent(String title) {
 		Optional<List<Posts>> posts = postRepository.findPostByTitleContent(title);
 		if (posts.isPresent()) {
