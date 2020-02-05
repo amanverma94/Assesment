@@ -33,4 +33,24 @@ public class UsersContoller {
 	public UserDetailsDTO getUserByName(@RequestParam String name) {
 		return userDetailService.getUserByName(name);
 	}
+	
+	@GetMapping("username")
+	public UserDetailsDTO getUserByUsername(@RequestParam String username) {
+		return userDetailService.getUserByUsername(username);
+	}
+	
+	@GetMapping("email")
+	public UserDetailsDTO getUserByEmail(@RequestParam String email) {
+		return userDetailService.getUserByEmail(email);
+	}
+	
+	@GetMapping("phone")
+	public UserDetailsDTO getUserByPhone(@RequestParam String phone) {
+		return userDetailService.getUserByPhone(phone);
+	}
+	
+	@GetMapping("website")
+	public UserDetailsDTO getUserByWebsite(@RequestParam String website) {
+		return userDetailService.getUserByWebsite(website);
+	}
 }

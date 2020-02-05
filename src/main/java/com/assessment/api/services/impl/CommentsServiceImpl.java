@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.assessment.api.dto.CommentsDTO;
 import com.assessment.api.entity.Comments;
@@ -19,12 +17,6 @@ import com.assessment.api.services.CommentsService;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {
-
-	@Value("${external.api.url}")
-	private String externalAPI;
-
-	@Autowired
-	RestTemplate restTemplate;
 
 	@Autowired
 	private PostsRepository postRepository;

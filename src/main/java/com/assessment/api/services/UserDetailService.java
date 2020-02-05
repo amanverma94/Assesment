@@ -15,5 +15,13 @@ public interface UserDetailService {
 	
 	public UserDetailsDTO getUserByName(String name);
 	
+	public UserDetailsDTO getUserByUsername(String username);
+	
+	public UserDetailsDTO getUserByEmail(String email);
+	
+	public UserDetailsDTO getUserByPhone(String phne);
+	
+	public UserDetailsDTO getUserByWebsite(String websit);
+	
 	
 }
