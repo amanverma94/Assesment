@@ -5,8 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.assessment.api.dto.AddressDTO;
+import com.assessment.api.dto.CompanyDTO;
 import com.assessment.api.dto.UserDetailsDTO;
+import com.assessment.api.entity.Address;
+import com.assessment.api.entity.Company;
+import com.assessment.api.entity.Geo;
 import com.assessment.api.entity.UserDetails;
+import com.assessment.api.mapper.AddressMapper;
+import com.assessment.api.mapper.CompanyMapper;
 import com.assessment.api.mapper.UserDetailsMapper;
 import com.assessment.api.repository.AddressRepository;
 import com.assessment.api.repository.CompanyRepository;
@@ -31,6 +38,12 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Autowired
 	private UserDetailsMapper userDetailsMapper;
+
+	@Autowired
+	private AddressMapper addressMapper;
+
+	@Autowired
+	private CompanyMapper companyMapper;
 
 	public UserDetails getUserDetailsByUserId(Integer userId) {
 		return userDetailsRepository.findById(userId).get();
@@ -97,4 +110,106 @@ public class UserDetailServiceImpl implements UserDetailService {
 		}
 		return userDetailsMapper.toDto(userDetails);
 	}
+
+	@Override
+	public AddressDTO getUserAddressById(Integer userId) {
+		UserDetails userDetails = getUserDetailsByUserId(userId);
+		if (null != userDetails && null != userDetails.getAddress()) {
+			return addressMapper.toDto(userDetails.getAddress());
+		}
+		return null;
+	}
+
+	@Override
+	public CompanyDTO getUserCompanyById(Integer userId) {
+		UserDetails userDetails = getUserDetailsByUserId(userId);
+		if (null != userDetails && null != userDetails.getCompany()) {
+			return companyMapper.toDto(userDetails.getCompany());
+		}
+		return null;
+	}
+
+	@Override
+	public void addUser(UserDetailsDTO userDetailsDTO) {
+		if (null != userDetailsDTO) {
+			UserDetails userDetails = userDetailsMapper.toEntity(userDetailsDTO);
+			Address addressObj = new Address();
+			Geo geo = new Geo();
+			Address address = saveAddress(addressObj, geo, userDetailsDTO);
+			userDetails.setAddress(address);
+			Company companyObj = new Company();
+			Company company = saveCompany(companyObj, userDetailsDTO);
+			userDetails.setCompany(company);
+
+			userDetailsRepository.save(userDetails);
+		}
+	}
+
+	private Address saveAddress(Address address, Geo geo, UserDetailsDTO userDetailsDTO) {
+
+		address.setCity(userDetailsDTO.getAddress().getCity());
+		address.setSuite(userDetailsDTO.getAddress().getSuite());
+		address.setStreet(userDetailsDTO.getAddress().getStreet());
+		address.setZipcode(userDetailsDTO.getAddress().getZipcode());
+		Geo geos = saveGeo(geo, userDetailsDTO);
+		address.setGeo(geos);
+		addressRepository.save(address);
+		return address;
+	}
+
+	private Geo saveGeo(Geo geo, UserDetailsDTO userDetailsDTO) {
+
+		geo.setLat(userDetailsDTO.getAddress().getGeo().getLat());
+		geo.setLng(userDetailsDTO.getAddress().getGeo().getLng());
+		geoRepository.save(geo);
+		return geo;
+	}
+
+	private Company saveCompany(Company company, UserDetailsDTO userDetailsDTO) {
+		company.setName(userDetailsDTO.getCompany().getName());
+		company.setBs(userDetailsDTO.getCompany().getBs());
+		company.setCatchPhrase(userDetailsDTO.getCompany().getCatchPhrase());
+		companyRepository.save(company);
+		return company;
+	}
+
+	@Override
+	public void editUser(Integer userId, UserDetailsDTO userDetailsDTO) {
+		UserDetails userDetails = getUserDetailsByUserId(userId);
+		if (null != userDetails) {
+			userDetails.setName(userDetailsDTO.getName());
+			userDetails.setUsername(userDetailsDTO.getUsername());
+			userDetails.setEmail(userDetailsDTO.getEmail());
+			userDetails.setPhone(userDetailsDTO.getPhone());
+			userDetails.setWebsite(userDetailsDTO.getWebsite());
+
+			Address address = saveAddress(userDetails.getAddress(), userDetails.getAddress().getGeo(), userDetailsDTO);
+			userDetails.setAddress(address);
+
+			Company company = saveCompany(userDetails.getCompany(), userDetailsDTO);
+			userDetails.setCompany(company);
+
+			userDetailsRepository.save(userDetails);
+		}
+	}
+
+	@Override
+	public void deleteUser(Integer userId) {
+		UserDetails userDetails = getUserDetailsByUserId(userId);
+		userDetailsRepository.delete(userDetails);
+		if (null != userDetails.getCompany()) {
+			companyRepository.delete(userDetails.getCompany());
+		}
+		if (null != userDetails) {
+			if (null != userDetails.getAddress()) {
+				addressRepository.delete(userDetails.getAddress());
+				if (null != userDetails.getAddress().getGeo()) {
+					geoRepository.delete(userDetails.getAddress().getGeo());
+				}
+
+			}
+
+		}
+	}
+
 }
