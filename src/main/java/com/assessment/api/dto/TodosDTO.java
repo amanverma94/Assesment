@@ -10,7 +10,7 @@ public class TodosDTO {
 	private Integer id;
 	private String title;
 	private Boolean completed;
-	private UserDetailsDTO userId;
+	private Integer user;
 
 	public Integer getId() {
 		return id;
@@ -36,12 +36,12 @@ public class TodosDTO {
 		this.completed = completed;
 	}
 
-	public UserDetailsDTO getUserId() {
-		return userId;
+	public Integer getUser() {
+		return user;
 	}
 
-	public void setUserId(UserDetailsDTO userId) {
-		this.userId = userId;
+	public void setUser(Integer user) {
+		this.user = user;
 	}
 
 }

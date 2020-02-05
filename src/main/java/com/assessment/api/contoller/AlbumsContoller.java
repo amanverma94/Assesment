@@ -29,7 +29,7 @@ public class AlbumsContoller {
 	}
 
 	@GetMapping("{id}")
-	public AlbumsDTO getCommentById(@PathVariable Integer id) {
+	public AlbumsDTO getAlbumById(@PathVariable Integer id) {
 		return albumsService.getAlbumById(id);
 	}
 
@@ -51,12 +51,12 @@ public class AlbumsContoller {
 	}
 
 	@PutMapping
-	public void updateComment(@RequestParam Integer id, @RequestParam Integer userId, @RequestParam String title) {
+	public void updateAlbum(@RequestParam Integer id, @RequestParam Integer userId, @RequestParam String title) {
 		albumsService.updateAlbum(id, userId, title);
 	}
 
 	@DeleteMapping
-	public void deletePost(@RequestParam Integer id) {
+	public void deleteAlbum(@RequestParam Integer id) {
 		albumsService.deleteAlbum(id);
 	}
 

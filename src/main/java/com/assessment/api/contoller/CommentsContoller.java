@@ -63,7 +63,7 @@ public class CommentsContoller {
 	}
 
 	@DeleteMapping
-	public void deletePost(@RequestParam Integer id) {
+	public void deleteComment(@RequestParam Integer id) {
 		commentsService.deleteComment(id);
 	}
 

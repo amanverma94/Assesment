@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.assessment.api.BO.PhotosBO;
-import com.assessment.api.BO.TodosBO;
 import com.assessment.api.dto.AlbumsDTO;
 import com.assessment.api.dto.CommentsDTO;
+import com.assessment.api.dto.PhotosDTO;
 import com.assessment.api.dto.PostsDTO;
+import com.assessment.api.dto.TodosDTO;
 import com.assessment.api.dto.UserDetailsDTO;
 import com.assessment.api.entity.Address;
 import com.assessment.api.entity.Albums;
@@ -193,28 +193,28 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 	}
 
 	private void savePhotosToDB() {
-		ResponseEntity<PhotosBO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/photos",
-				PhotosBO[].class);
-		List<PhotosBO> photosBOList = Arrays.asList(responseEntity.getBody());
-		for (PhotosBO photosBO : photosBOList) {
+		ResponseEntity<PhotosDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/photos",
+				PhotosDTO[].class);
+		List<PhotosDTO> photosList = Arrays.asList(responseEntity.getBody());
+		for (PhotosDTO photosBO : photosList) {
 			Photos photos = new Photos();
 			photos.setTitle(photosBO.getTitle());
 			photos.setThumbnailUrl(photosBO.getThumbnailUrl());
 			photos.setUrl(photosBO.getUrl());
-			Albums album = albumsRepository.findById(photosBO.getAlbumId()).get();
+			Albums album = albumsRepository.findById(photosBO.getAlbum()).get();
 			photos.setAlbumId(album);
 			photosRepository.save(photos);
 		}
 	}
 
 	private void saveTodosToDB() {
-		ResponseEntity<TodosBO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/todos", TodosBO[].class);
-		List<TodosBO> todosBOList = Arrays.asList(responseEntity.getBody());
-		for (TodosBO todosBO : todosBOList) {
+		ResponseEntity<TodosDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/todos", TodosDTO[].class);
+		List<TodosDTO> todosList = Arrays.asList(responseEntity.getBody());
+		for (TodosDTO todosBO : todosList) {
 			Todos todo = new Todos();
 			todo.setTitle(todosBO.getTitle());
 			todo.setCompleted(todosBO.getCompleted());
-			UserDetails userDetails = userDetailService.getUserDetailsByUserId(todosBO.getUserId());
+			UserDetails userDetails = userDetailService.getUserDetailsByUserId(todosBO.getUser());
 			todo.setUserId(userDetails);
 			todosRepository.save(todo);
 		}

@@ -10,7 +10,7 @@ public class PhotosDTO {
 	private String title;
 	private String url;
 	private String thumbnailUrl;
-	private AlbumsDTO albumId;
+	private Integer album;
 
 	public Integer getId() {
 		return id;
@@ -44,12 +44,12 @@ public class PhotosDTO {
 		this.thumbnailUrl = thumbnailUrl;
 	}
 
-	public AlbumsDTO getAlbumId() {
-		return albumId;
+	public Integer getAlbum() {
+		return album;
 	}
 
-	public void setAlbumId(AlbumsDTO albumId) {
-		this.albumId = albumId;
+	public void setAlbum(Integer album) {
+		this.album = album;
 	}
 
 }
