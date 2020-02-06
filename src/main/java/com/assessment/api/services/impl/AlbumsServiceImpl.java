@@ -55,7 +55,10 @@ public class AlbumsServiceImpl implements AlbumsService {
 			return null;
 		}
 		Optional<Albums> albums = albumsRepository.findById(id);
-		return albumsMapper.toDto(albums.get());
+		if (albums.isPresent()) {
+			return albumsMapper.toDto(albums.get());
+		}
+		return null;
 	}
 
 	@Override
@@ -100,18 +103,24 @@ public class AlbumsServiceImpl implements AlbumsService {
 	@Override
 	public void updateAlbum(Integer id, Integer userId, String title) {
 		if (null != id) {
-			Albums album = albumsRepository.findById(id).get();
-			saveAlbum(userId, title, album);
+			Optional<Albums> album = albumsRepository.findById(id);
+			if (album.isPresent()) {
+				saveAlbum(userId, title, album.get());
+			}
 		}
 	}
 
 	@Override
 	public void deleteAlbum(Integer id) {
 		if (null != id) {
-			Albums album = albumsRepository.findById(id).get();
-			List<Photos> photos = photosRepository.findByAlbum(album).get();
-			photosRepository.deleteAll(photos);
-			albumsRepository.delete(album);
+			Optional<Albums> album = albumsRepository.findById(id);
+			if (album.isPresent()) {
+				Optional<List<Photos>> photos = photosRepository.findByAlbum(album.get());
+				if (photos.isPresent()) {
+					photosRepository.deleteAll(photos.get());
+				}
+				albumsRepository.delete(album.get());
+			}
 		}
 	}
 

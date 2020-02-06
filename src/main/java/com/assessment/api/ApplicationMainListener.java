@@ -2,6 +2,7 @@ package com.assessment.api;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -177,8 +178,10 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 			comments.setEmail(commentDTO.getEmail());
 			comments.setName(commentDTO.getName());
 			if (null != commentDTO.getPostId()) {
-				Posts post = postRepository.findById(commentDTO.getPostId()).get();
-				comments.setPost(post);
+				Optional<Posts> post = postRepository.findById(commentDTO.getPostId());
+				if (post.isPresent()) {
+					comments.setPost(post.get());
+				}
 			}
 			commentsRepository.save(comments);
 		}
@@ -211,8 +214,10 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 			photos.setThumbnailUrl(photosBO.getThumbnailUrl());
 			photos.setUrl(photosBO.getUrl());
 			if (null != photosBO.getAlbumId()) {
-				Albums album = albumsRepository.findById(photosBO.getAlbumId()).get();
-				photos.setAlbum(album);
+				Optional<Albums> album = albumsRepository.findById(photosBO.getAlbumId());
+				if (album.isPresent()) {
+					photos.setAlbum(album.get());
+				}
 			}
 			photosRepository.save(photos);
 		}

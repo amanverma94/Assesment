@@ -50,7 +50,10 @@ public class TodosServiceImpl implements TodosService {
 			return null;
 		}
 		Optional<Todos> todos = todosRepository.findById(id);
-		return todosMapper.toDto(todos.get());
+		if (todos.isPresent()) {
+			return todosMapper.toDto(todos.get());
+		}
+		return null;
 	}
 
 	@Override
@@ -106,16 +109,20 @@ public class TodosServiceImpl implements TodosService {
 	@Override
 	public void updateTodo(Integer id, Integer userId, String title, Boolean completed) {
 		if (null != id) {
-			Todos todos = todosRepository.findById(id).get();
-			saveTodo(userId, title, completed, todos);
+			Optional<Todos> todos = todosRepository.findById(id);
+			if (todos.isPresent()) {
+				saveTodo(userId, title, completed, todos.get());
+			}
 		}
 	}
 
 	@Override
 	public void deleteTodo(Integer id) {
 		if (null != id) {
-			Todos todos = todosRepository.findById(id).get();
-			todosRepository.delete(todos);
+			Optional<Todos> todos = todosRepository.findById(id);
+			if (todos.isPresent()) {
+				todosRepository.delete(todos.get());
+			}
 		}
 	}
 

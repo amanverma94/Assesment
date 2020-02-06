@@ -77,7 +77,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == userId) {
 			return null;
 		}
-		return userDetailsRepository.findById(userId).get();
+		return userDetailsRepository.findById(userId).isPresent() ? userDetailsRepository.findById(userId).get() : null;
 	}
 
 	public List<UserDetailsDTO> getAllUsers() {
@@ -93,11 +93,11 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == id) {
 			return null;
 		}
-		UserDetails userDetails = userDetailsRepository.findById(id).get();
-		if (null == userDetails) {
-			return null;
+		Optional<UserDetails> userDetails = userDetailsRepository.findById(id);
+		if (userDetails.isPresent()) {
+			return userDetailsMapper.toDto(userDetails.get());
 		}
-		return userDetailsMapper.toDto(userDetails);
+		return null;
 	}
 
 	@Override
@@ -105,11 +105,11 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == name) {
 			return null;
 		}
-		UserDetails userDetails = userDetailsRepository.findByName(name).get();
-		if (null == userDetails) {
-			return null;
+		Optional<UserDetails> userDetails = userDetailsRepository.findByName(name);
+		if (userDetails.isPresent()) {
+			return userDetailsMapper.toDto(userDetails.get());
 		}
-		return userDetailsMapper.toDto(userDetails);
+		return null;
 	}
 
 	@Override
@@ -117,11 +117,11 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == username) {
 			return null;
 		}
-		UserDetails userDetails = userDetailsRepository.findByUsername(username).get();
-		if (null == userDetails) {
-			return null;
+		Optional<UserDetails> userDetails = userDetailsRepository.findByUsername(username);
+		if (userDetails.isPresent()) {
+			return userDetailsMapper.toDto(userDetails.get());
 		}
-		return userDetailsMapper.toDto(userDetails);
+		return null;
 	}
 
 	@Override
@@ -129,11 +129,11 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == email) {
 			return null;
 		}
-		UserDetails userDetails = userDetailsRepository.findByEmail(email).get();
-		if (null == userDetails) {
-			return null;
+		Optional<UserDetails> userDetails = userDetailsRepository.findByEmail(email);
+		if (userDetails.isPresent()) {
+			return userDetailsMapper.toDto(userDetails.get());
 		}
-		return userDetailsMapper.toDto(userDetails);
+		return null;
 	}
 
 	@Override
@@ -141,11 +141,11 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == phone) {
 			return null;
 		}
-		UserDetails userDetails = userDetailsRepository.findByPhone(phone).get();
-		if (null == userDetails) {
-			return null;
+		Optional<UserDetails> userDetails = userDetailsRepository.findByPhone(phone);
+		if (userDetails.isPresent()) {
+			return userDetailsMapper.toDto(userDetails.get());
 		}
-		return userDetailsMapper.toDto(userDetails);
+		return null;
 	}
 
 	@Override
@@ -153,8 +153,11 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == website) {
 			return null;
 		}
-		UserDetails userDetails = userDetailsRepository.findByWebsite(website).get();
-		return (null != userDetails ? userDetailsMapper.toDto(userDetails) : null);
+		 Optional<UserDetails> userDetails = userDetailsRepository.findByWebsite(website);
+		if (userDetails.isPresent()) {
+			return userDetailsMapper.toDto(userDetails.get());
+		}
+		return null;
 	}
 
 	@Override

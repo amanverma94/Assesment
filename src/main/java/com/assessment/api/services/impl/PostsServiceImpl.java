@@ -68,7 +68,10 @@ public class PostsServiceImpl implements PostsService {
 			return null;
 		}
 		Optional<Posts> post = postRepository.findById(id);
-		return postsMapper.toDto(post.get());
+		if (post.isPresent()) {
+			return postsMapper.toDto(post.get());
+		}
+		return null;
 	}
 
 	@Override
@@ -112,18 +115,24 @@ public class PostsServiceImpl implements PostsService {
 	@Override
 	public void updatePost(Integer id, Integer userId, String title, String body) {
 		if (null != id) {
-			Posts post = postRepository.findById(id).get();
-			savePost(userId, title, body, post);
+			Optional<Posts> post = postRepository.findById(id);
+			if (post.isPresent()) {
+				savePost(userId, title, body, post.get());
+			}
 		}
 	}
 
 	@Override
 	public void deletePost(Integer id) {
 		if (null != id) {
-			Posts post = postRepository.findById(id).get();
-			List<Comments> comment = commentsRepository.findByPost(post).get();
-			commentsRepository.deleteAll(comment);
-			postRepository.delete(post);
+			Optional<Posts> post = postRepository.findById(id);
+			if (post.isPresent()) {
+				Optional<List<Comments>> comment = commentsRepository.findByPost(post.get());
+				if (comment.isPresent()) {
+					commentsRepository.deleteAll(comment.get());
+				}
+				postRepository.delete(post.get());
+			}
 		}
 	}
 }

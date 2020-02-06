@@ -49,8 +49,11 @@ public class PhotosServiceImpl implements PhotosService {
 		if (null == id) {
 			return null;
 		}
-		Optional<Photos> Photos = photosRepository.findById(id);
-		return photosMapper.toDto(Photos.get());
+		Optional<Photos> photos = photosRepository.findById(id);
+		if (photos.isPresent()) {
+			return photosMapper.toDto(photos.get());
+		}
+		return null;
 	}
 
 	@Override
@@ -58,10 +61,12 @@ public class PhotosServiceImpl implements PhotosService {
 		if (null == albumId) {
 			return null;
 		}
-		Albums album = albumsRepository.findById(albumId).get();
-		Optional<List<Photos>> Photos = photosRepository.findByAlbum(album);
-		if (Photos.isPresent()) {
-			return mapEntityToDtoList(Photos.get());
+		Optional<Albums> album = albumsRepository.findById(albumId);
+		if (album.isPresent()) {
+			Optional<List<Photos>> Photos = photosRepository.findByAlbum(album.get());
+			if (Photos.isPresent()) {
+				return mapEntityToDtoList(Photos.get());
+			}
 		}
 		return null;
 	}
@@ -113,8 +118,10 @@ public class PhotosServiceImpl implements PhotosService {
 		photo.setUrl(url);
 		photo.setThumbnailUrl(thumbnailUrl);
 		if (null != albumId) {
-			Albums album = albumsRepository.findById(albumId).get();
-			photo.setAlbum(album);
+			Optional<Albums> album = albumsRepository.findById(albumId);
+			if (album.isPresent()) {
+				photo.setAlbum(album.get());
+			}
 		}
 		photosRepository.save(photo);
 	}
@@ -122,16 +129,20 @@ public class PhotosServiceImpl implements PhotosService {
 	@Override
 	public void updatePhoto(Integer id, Integer albumId, String title, String url, String thumbnailUrl) {
 		if (null != id) {
-			Photos photo = photosRepository.findById(id).get();
-			savePhoto(albumId, title, url, thumbnailUrl, photo);
+			Optional<Photos> photo = photosRepository.findById(id);
+			if (photo.isPresent()) {
+				savePhoto(albumId, title, url, thumbnailUrl, photo.get());
+			}
 		}
 	}
 
 	@Override
 	public void deletePhoto(Integer id) {
 		if (null != id) {
-			Photos Photo = photosRepository.findById(id).get();
-			photosRepository.delete(Photo);
+			Optional<Photos> photo = photosRepository.findById(id);
+			if (photo.isPresent()) {
+				photosRepository.delete(photo.get());
+			}
 		}
 	}
 

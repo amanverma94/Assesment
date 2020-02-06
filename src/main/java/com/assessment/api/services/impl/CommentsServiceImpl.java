@@ -46,13 +46,14 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public List<CommentsDTO> getCommentsByPostId(Integer postId) {
-		Posts post = null != postId ? postRepository.findById(postId).get() : null;
-		if (null == post) {
-			return null;
-		}
-		Optional<List<Comments>> comments = commentsRepository.findByPost(post);
-		if (comments.isPresent()) {
-			return mapEntityListToDtoList(comments.get());
+		if (null != postId) {
+			Optional<Posts> post = postRepository.findById(postId);
+			if (post.isPresent()) {
+				Optional<List<Comments>> comments = commentsRepository.findByPost(post.get());
+				if (comments.isPresent()) {
+					return mapEntityListToDtoList(comments.get());
+				}
+			}
 		}
 		return null;
 	}
@@ -63,7 +64,7 @@ public class CommentsServiceImpl implements CommentsService {
 			return null;
 		}
 		Optional<Comments> comments = commentsRepository.findById(id);
-		return commentsMapper.toDto(comments.get());
+		return comments.isPresent() ? commentsMapper.toDto(comments.get()) : null;
 	}
 
 	@Override
@@ -113,8 +114,10 @@ public class CommentsServiceImpl implements CommentsService {
 		comment.setEmail(email);
 		comment.setName(name);
 		if (null != postId) {
-			Posts post = postRepository.findById(postId).get();
-			comment.setPost(post);
+			Optional<Posts> post = postRepository.findById(postId);
+			if (post.isPresent()) {
+				comment.setPost(post.get());
+			}
 		}
 		commentsRepository.save(comment);
 	}
@@ -122,16 +125,20 @@ public class CommentsServiceImpl implements CommentsService {
 	@Override
 	public void updateComment(Integer id, Integer postId, String name, String body, String email) {
 		if (null != id) {
-			Comments comment = commentsRepository.findById(id).get();
-			saveComment(postId, name, body, email, comment);
+			Optional<Comments> comment = commentsRepository.findById(id);
+			if (comment.isPresent()) {
+				saveComment(postId, name, body, email, comment.get());
+			}
 		}
 	}
 
 	@Override
 	public void deleteComment(Integer id) {
 		if (null != id) {
-			Comments comment = commentsRepository.findById(id).get();
-			commentsRepository.delete(comment);
+			Optional<Comments> comment = commentsRepository.findById(id);
+			if (comment.isPresent()) {
+				commentsRepository.delete(comment.get());
+			}
 		}
 	}
 
