@@ -16,7 +16,7 @@ import com.assessment.api.entity.UserDetails;
 @Transactional
 public interface AlbumsRepository extends JpaRepository<Albums, Integer> {
 
-	Optional<List<Albums>> findByUserId(UserDetails userId);
+	Optional<List<Albums>> findByUser(UserDetails userId);
 	
 	@Query(nativeQuery = true, value = "Select * from albums p where p.title like %:title%")
 	Optional<List<Albums>> findPostByTitle(@Param("title") String title);

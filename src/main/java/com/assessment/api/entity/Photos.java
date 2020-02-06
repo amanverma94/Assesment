@@ -41,9 +41,9 @@ public class Photos implements Serializable {
     private String url;
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
-    @JoinColumn(name = "album_id", referencedColumnName = "id")
+    @JoinColumn(name = "album", referencedColumnName = "id")
     @ManyToOne
-    private Albums albumId;
+    private Albums album;
 
     public Photos() {
     }
@@ -84,12 +84,12 @@ public class Photos implements Serializable {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public Albums getAlbumId() {
-        return albumId;
+    public Albums getAlbum() {
+        return album;
     }
 
-    public void setAlbumId(Albums albumId) {
-        this.albumId = albumId;
+    public void setAlbum(Albums album) {
+        this.album = album;
     }
 
     @Override

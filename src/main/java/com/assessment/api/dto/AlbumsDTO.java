@@ -8,7 +8,7 @@ public class AlbumsDTO {
 
 	private Integer id;
 	private String title;
-	private Integer user;
+	private Integer userId;
 
 	public Integer getId() {
 		return id;
@@ -26,12 +26,19 @@ public class AlbumsDTO {
 		this.title = title;
 	}
 
-	public Integer getUser() {
-		return user;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setUser(Integer user) {
-		this.user = user;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
+
+	@Override
+	public String toString() {
+		return "AlbumsDTO [id=" + id + ", title=" + title + ", userId=" + userId + "]";
+	}
+	
+	
 
 }

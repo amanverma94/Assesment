@@ -16,7 +16,7 @@ import com.assessment.api.entity.UserDetails;
 @Transactional
 public interface TodosRepository extends JpaRepository<Todos, Integer> {
 	
-	Optional<List<Todos>> findByUserId(UserDetails userId);
+	Optional<List<Todos>> findByUser(UserDetails userId);
 	
 	Optional<List<Todos>> findByCompleted(Boolean completed);
 	

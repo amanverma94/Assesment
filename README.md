@@ -11,9 +11,6 @@
 
 6. Run the Spring boot application
 
-7. Once server is up and running, open you browser and navigate to below url
-http://localhost:8080/api/swagger-ui.html
+7. Once server is up and running, open you browser and navigate to the url - 'http://localhost:8080/api/swagger-ui.html'. We can check all our APIs on the browser itself and won't require any other application like PostMan etc.
 
-We can check all our APIs on the browser itself and won't require any other application like PostMan etc.
-
-
+8. It is suggested to change the property 'spring.jpa.hibernate.ddl-auto' to 'update' from 'create' in application.properties file, so that the data won't get inserted again to the DB when staring the application again and the application can start instantly.

@@ -16,7 +16,7 @@ import com.assessment.api.entity.Photos;
 @Transactional
 public interface PhotosRepository extends JpaRepository<Photos, Integer> {
 
-	Optional<List<Photos>> findByAlbumId(Albums albumid);
+	Optional<List<Photos>> findByAlbum(Albums albumid);
 	
 	@Query(nativeQuery = true, value = "Select * from photos p where p.title like %:title%")
 	Optional<List<Photos>> findByTitle(@Param("title") String title);

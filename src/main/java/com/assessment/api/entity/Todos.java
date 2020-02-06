@@ -38,9 +38,9 @@ public class Todos implements Serializable {
     private String title;
     @Column(name = "completed")
     private Boolean completed;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     @ManyToOne
-    private UserDetails userId;
+    private UserDetails user;
 
     public Todos() {
     }
@@ -73,12 +73,12 @@ public class Todos implements Serializable {
         this.completed = completed;
     }
 
-    public UserDetails getUserId() {
-        return userId;
+    public UserDetails getUser() {
+        return user;
     }
 
-    public void setUserId(UserDetails userId) {
-        this.userId = userId;
+    public void setUser(UserDetails user) {
+        this.user = user;
     }
 
     @Override

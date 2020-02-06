@@ -51,8 +51,11 @@ public class PostsServiceImpl implements PostsService {
 
 	@Override
 	public List<PostsDTO> getAllPostsByUserId(Integer userId) {
+		if (null == userId) {
+			return null;
+		}
 		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
-		Optional<List<Posts>> posts = postRepository.findByUserId(userDetails);
+		Optional<List<Posts>> posts = postRepository.findByUser(userDetails);
 		if (posts.isPresent()) {
 			return mapEntityListToDtoList(posts.get());
 		}
@@ -61,12 +64,18 @@ public class PostsServiceImpl implements PostsService {
 
 	@Override
 	public PostsDTO getPostById(Integer id) {
+		if (null == id) {
+			return null;
+		}
 		Optional<Posts> post = postRepository.findById(id);
 		return postsMapper.toDto(post.get());
 	}
 
 	@Override
 	public List<PostsDTO> getPostByTitleContent(String title) {
+		if (null == title) {
+			return null;
+		}
 		Optional<List<Posts>> posts = postRepository.findPostByTitleContent(title);
 		if (posts.isPresent()) {
 			return mapEntityListToDtoList(posts.get());
@@ -75,8 +84,11 @@ public class PostsServiceImpl implements PostsService {
 	}
 
 	@Override
-	public List<PostsDTO> getPostByBodyContent(String title) {
-		Optional<List<Posts>> posts = postRepository.findPostByBodyContent(title);
+	public List<PostsDTO> getPostByBodyContent(String body) {
+		if (null == body) {
+			return null;
+		}
+		Optional<List<Posts>> posts = postRepository.findPostByBodyContent(body);
 		if (posts.isPresent()) {
 			return mapEntityListToDtoList(posts.get());
 		}
@@ -91,7 +103,7 @@ public class PostsServiceImpl implements PostsService {
 
 	private void savePost(Integer userId, String title, String body, Posts post) {
 		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
-		post.setUserId(userDetails);
+		post.setUser(userDetails);
 		post.setTitle(title);
 		post.setBody(body);
 		postRepository.save(post);
@@ -99,16 +111,19 @@ public class PostsServiceImpl implements PostsService {
 
 	@Override
 	public void updatePost(Integer id, Integer userId, String title, String body) {
-		Posts post = postRepository.findById(id).get();
-		savePost(userId, title, body, post);
+		if (null != id) {
+			Posts post = postRepository.findById(id).get();
+			savePost(userId, title, body, post);
+		}
 	}
 
 	@Override
 	public void deletePost(Integer id) {
-		Posts post = postRepository.findById(id).get();
-		List<Comments> comment = commentsRepository.findByPostId(post).get();
-		commentsRepository.deleteAll(comment);
-		postRepository.delete(post);
-		
+		if (null != id) {
+			Posts post = postRepository.findById(id).get();
+			List<Comments> comment = commentsRepository.findByPost(post).get();
+			commentsRepository.deleteAll(comment);
+			postRepository.delete(post);
+		}
 	}
 }

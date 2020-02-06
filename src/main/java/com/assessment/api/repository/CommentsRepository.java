@@ -16,7 +16,7 @@ import com.assessment.api.entity.Posts;
 @Transactional
 public interface CommentsRepository extends JpaRepository<Comments, Integer> {
 
-	Optional<List<Comments>> findByPostId(Posts post);
+	Optional<List<Comments>> findByPost(Posts post);
 
 	@Query(nativeQuery = true, value = "Select * from comments p where p.email like %:email%")
 	Optional<List<Comments>> findByEmail(@Param("email") String email);

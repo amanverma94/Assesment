@@ -9,7 +9,7 @@ import com.assessment.api.entity.Comments;
 @Mapper(componentModel = "spring", implementationPackage = "com.assessment.api.mapper.impl")
 public interface CommentsMapper {
 
-	@Mapping(target = "postId", source = "comment.postId.id")
+	@Mapping(target = "postId", source = "post.id")
 	public CommentsDTO toDto(Comments comment);
 
 }

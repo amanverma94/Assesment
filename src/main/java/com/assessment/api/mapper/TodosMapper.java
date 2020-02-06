@@ -9,7 +9,7 @@ import com.assessment.api.entity.Todos;
 @Mapper(componentModel = "spring", implementationPackage = "com.assessment.api.mapper.impl")
 public interface TodosMapper {
 	
-	@Mapping(target = "user", source = "todos.userId.id")
+	@Mapping(target = "userId", source = "user.id")
 	public TodosDTO toDto(Todos todos);
 	
 }

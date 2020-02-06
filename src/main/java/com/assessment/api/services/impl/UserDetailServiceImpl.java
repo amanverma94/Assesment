@@ -51,7 +51,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
-	
+
 	@Autowired
 	private TodosRepository todosRepository;
 
@@ -69,11 +69,14 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Autowired
 	private PostsService postsService;
-	
+
 	@Autowired
 	private TodosService todosService;
 
 	public UserDetails getUserDetailsByUserId(Integer userId) {
+		if (null == userId) {
+			return null;
+		}
 		return userDetailsRepository.findById(userId).get();
 	}
 
@@ -87,6 +90,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public UserDetailsDTO getUserById(Integer id) {
+		if (null == id) {
+			return null;
+		}
 		UserDetails userDetails = userDetailsRepository.findById(id).get();
 		if (null == userDetails) {
 			return null;
@@ -96,6 +102,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public UserDetailsDTO getUserByName(String name) {
+		if (null == name) {
+			return null;
+		}
 		UserDetails userDetails = userDetailsRepository.findByName(name).get();
 		if (null == userDetails) {
 			return null;
@@ -105,6 +114,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public UserDetailsDTO getUserByUsername(String username) {
+		if (null == username) {
+			return null;
+		}
 		UserDetails userDetails = userDetailsRepository.findByUsername(username).get();
 		if (null == userDetails) {
 			return null;
@@ -114,6 +126,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public UserDetailsDTO getUserByEmail(String email) {
+		if (null == email) {
+			return null;
+		}
 		UserDetails userDetails = userDetailsRepository.findByEmail(email).get();
 		if (null == userDetails) {
 			return null;
@@ -123,6 +138,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public UserDetailsDTO getUserByPhone(String phone) {
+		if (null == phone) {
+			return null;
+		}
 		UserDetails userDetails = userDetailsRepository.findByPhone(phone).get();
 		if (null == userDetails) {
 			return null;
@@ -132,15 +150,18 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public UserDetailsDTO getUserByWebsite(String website) {
-		UserDetails userDetails = userDetailsRepository.findByWebsite(website).get();
-		if (null == userDetails) {
+		if (null == website) {
 			return null;
 		}
-		return userDetailsMapper.toDto(userDetails);
+		UserDetails userDetails = userDetailsRepository.findByWebsite(website).get();
+		return (null != userDetails ? userDetailsMapper.toDto(userDetails) : null);
 	}
 
 	@Override
 	public AddressDTO getUserAddressById(Integer userId) {
+		if (null == userId) {
+			return null;
+		}
 		UserDetails userDetails = getUserDetailsByUserId(userId);
 		if (null != userDetails && null != userDetails.getAddress()) {
 			return addressMapper.toDto(userDetails.getAddress());
@@ -150,6 +171,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Override
 	public CompanyDTO getUserCompanyById(Integer userId) {
+		if (null == userId) {
+			return null;
+		}
 		UserDetails userDetails = getUserDetailsByUserId(userId);
 		if (null != userDetails && null != userDetails.getCompany()) {
 			return companyMapper.toDto(userDetails.getCompany());
@@ -224,27 +248,27 @@ public class UserDetailServiceImpl implements UserDetailService {
 	@Override
 	public void deleteUser(Integer userId) {
 		UserDetails userDetails = getUserDetailsByUserId(userId);
-		Optional<List<Albums>> albums = albumsRepository.findByUserId(userDetails);
+		Optional<List<Albums>> albums = albumsRepository.findByUser(userDetails);
 		if (albums.isPresent()) {
 			for (Albums album : albums.get()) {
 				albumsService.deleteAlbum(album.getId());
 			}
 		}
 
-		Optional<List<Posts>> posts = postRepository.findByUserId(userDetails);
+		Optional<List<Posts>> posts = postRepository.findByUser(userDetails);
 		if (albums.isPresent()) {
 			for (Posts post : posts.get()) {
 				postsService.deletePost(post.getId());
 			}
 		}
-		
-		Optional<List<Todos>> todos = todosRepository.findByUserId(userDetails);
+
+		Optional<List<Todos>> todos = todosRepository.findByUser(userDetails);
 		if (todos.isPresent()) {
 			for (Todos todo : todos.get()) {
 				todosService.deleteTodo(todo.getId());
 			}
 		}
-		
+
 		userDetailsRepository.delete(userDetails);
 		if (null != userDetails.getCompany()) {
 			companyRepository.delete(userDetails.getCompany());

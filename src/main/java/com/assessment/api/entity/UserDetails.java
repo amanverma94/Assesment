@@ -50,7 +50,7 @@ public class UserDetails implements Serializable {
     private String phone;
     @Column(name = "website")
     private String website;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private Collection<Albums> albumsCollection;
     @JoinColumn(name = "address", referencedColumnName = "id")
     @ManyToOne
@@ -58,9 +58,9 @@ public class UserDetails implements Serializable {
     @JoinColumn(name = "company", referencedColumnName = "id")
     @ManyToOne
     private Company company;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private Collection<Todos> todosCollection;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private Collection<Posts> postsCollection;
 
     public UserDetails() {

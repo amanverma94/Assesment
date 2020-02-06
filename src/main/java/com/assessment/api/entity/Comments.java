@@ -41,9 +41,9 @@ public class Comments implements Serializable {
 	private String email;
 	@Column(name = "body", length = 500)
 	private String body;
-	@JoinColumn(name = "post_id", referencedColumnName = "id")
+	@JoinColumn(name = "post", referencedColumnName = "id")
 	@ManyToOne
-	private Posts postId;
+	private Posts post;
 
 	public Comments() {
 	}
@@ -84,12 +84,12 @@ public class Comments implements Serializable {
 		this.body = body;
 	}
 
-	public Posts getPostId() {
-		return postId;
+	public Posts getPost() {
+		return post;
 	}
 
-	public void setPostId(Posts postId) {
-		this.postId = postId;
+	public void setPost(Posts post) {
+		this.post = post;
 	}
 
 	@Override

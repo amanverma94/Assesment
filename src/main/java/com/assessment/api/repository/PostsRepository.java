@@ -16,7 +16,7 @@ import com.assessment.api.entity.UserDetails;
 @Transactional
 public interface PostsRepository extends JpaRepository<Posts, Integer> {
 
-	Optional<List<Posts>> findByUserId(UserDetails userId);
+	Optional<List<Posts>> findByUser(UserDetails userId);
 
 	Optional<Posts> findById(Integer id);
 

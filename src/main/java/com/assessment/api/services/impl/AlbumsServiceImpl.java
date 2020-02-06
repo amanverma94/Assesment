@@ -51,14 +51,20 @@ public class AlbumsServiceImpl implements AlbumsService {
 
 	@Override
 	public AlbumsDTO getAlbumById(Integer id) {
+		if (null == id) {
+			return null;
+		}
 		Optional<Albums> albums = albumsRepository.findById(id);
 		return albumsMapper.toDto(albums.get());
 	}
 
 	@Override
 	public List<AlbumsDTO> getAlbumsByUserId(Integer userId) {
+		if (null == userId) {
+			return null;
+		}
 		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
-		Optional<List<Albums>> albums = albumsRepository.findByUserId(userDetails);
+		Optional<List<Albums>> albums = albumsRepository.findByUser(userDetails);
 		if (albums.isPresent()) {
 			return mapEntityListToDtoList(albums.get());
 		}
@@ -67,6 +73,9 @@ public class AlbumsServiceImpl implements AlbumsService {
 
 	@Override
 	public List<AlbumsDTO> getAlbumByTitle(String title) {
+		if (null == title) {
+			return null;
+		}
 		Optional<List<Albums>> albums = albumsRepository.findPostByTitle(title);
 		if (albums.isPresent()) {
 			return mapEntityListToDtoList(albums.get());
@@ -83,23 +92,27 @@ public class AlbumsServiceImpl implements AlbumsService {
 	private void saveAlbum(Integer userId, String title, Albums album) {
 		album.setTitle(title);
 		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
-		album.setUserId(userDetails);
+		album.setUser(userDetails);
 
 		albumsRepository.save(album);
 	}
 
 	@Override
 	public void updateAlbum(Integer id, Integer userId, String title) {
-		Albums album = albumsRepository.findById(id).get();
-		saveAlbum(userId, title, album);
+		if (null != id) {
+			Albums album = albumsRepository.findById(id).get();
+			saveAlbum(userId, title, album);
+		}
 	}
 
 	@Override
 	public void deleteAlbum(Integer id) {
-		Albums album = albumsRepository.findById(id).get();
-		List<Photos> photos = photosRepository.findByAlbumId(album).get();
-		photosRepository.deleteAll(photos);
-		albumsRepository.delete(album);
+		if (null != id) {
+			Albums album = albumsRepository.findById(id).get();
+			List<Photos> photos = photosRepository.findByAlbum(album).get();
+			photosRepository.deleteAll(photos);
+			albumsRepository.delete(album);
+		}
 	}
 
 }

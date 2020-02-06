@@ -46,14 +46,20 @@ public class TodosServiceImpl implements TodosService {
 
 	@Override
 	public TodosDTO getTodoById(Integer id) {
+		if (null == id) {
+			return null;
+		}
 		Optional<Todos> todos = todosRepository.findById(id);
 		return todosMapper.toDto(todos.get());
 	}
 
 	@Override
 	public List<TodosDTO> getTodosByUserId(Integer userId) {
+		if (null == userId) {
+			return null;
+		}
 		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
-		Optional<List<Todos>> todos = todosRepository.findByUserId(userDetails);
+		Optional<List<Todos>> todos = todosRepository.findByUser(userDetails);
 		if (todos.isPresent()) {
 			return mapEntityListToDtoList(todos.get());
 		}
@@ -62,6 +68,9 @@ public class TodosServiceImpl implements TodosService {
 
 	@Override
 	public List<TodosDTO> getTodoByTitle(String title) {
+		if (null == title) {
+			return null;
+		}
 		Optional<List<Todos>> todos = todosRepository.findByTitle(title);
 		if (todos.isPresent()) {
 			return mapEntityListToDtoList(todos.get());
@@ -70,6 +79,9 @@ public class TodosServiceImpl implements TodosService {
 	}
 
 	public List<TodosDTO> getTodoByStatus(Boolean completed) {
+		if (null == completed) {
+			return null;
+		}
 		Optional<List<Todos>> todos = todosRepository.findByCompleted(completed);
 		if (todos.isPresent()) {
 			return mapEntityListToDtoList(todos.get());
@@ -86,22 +98,25 @@ public class TodosServiceImpl implements TodosService {
 	private void saveTodo(Integer userId, String title, Boolean completed, Todos todos) {
 		todos.setTitle(title);
 		UserDetails userDetails = userDetailService.getUserDetailsByUserId(userId);
-		todos.setUserId(userDetails);
+		todos.setUser(userDetails);
 		todos.setCompleted(completed);
 		todosRepository.save(todos);
 	}
 
 	@Override
 	public void updateTodo(Integer id, Integer userId, String title, Boolean completed) {
-		Todos todos = todosRepository.findById(id).get();
-		saveTodo(userId, title, completed, todos);
+		if (null != id) {
+			Todos todos = todosRepository.findById(id).get();
+			saveTodo(userId, title, completed, todos);
+		}
 	}
 
 	@Override
 	public void deleteTodo(Integer id) {
-		Todos todos = todosRepository.findById(id).get();
-		todosRepository.delete(todos);
-
+		if (null != id) {
+			Todos todos = todosRepository.findById(id).get();
+			todosRepository.delete(todos);
+		}
 	}
 
 }

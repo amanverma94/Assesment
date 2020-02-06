@@ -38,10 +38,10 @@ public class Albums implements Serializable {
     private Integer id;
     @Column(name = "title")
     private String title;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     @ManyToOne
-    private UserDetails userId;
-    @OneToMany(mappedBy = "albumId")
+    private UserDetails user;
+    @OneToMany(mappedBy = "album")
     private Collection<Photos> photosCollection;
 
     public Albums() {
@@ -67,12 +67,12 @@ public class Albums implements Serializable {
         this.title = title;
     }
 
-    public UserDetails getUserId() {
-        return userId;
+    public UserDetails getUser() {
+        return user;
     }
 
-    public void setUserId(UserDetails userId) {
-        this.userId = userId;
+    public void setUser(UserDetails user) {
+        this.user = user;
     }
 
     @XmlTransient

@@ -9,6 +9,6 @@ import com.assessment.api.entity.Photos;
 @Mapper(componentModel = "spring", implementationPackage = "com.assessment.api.mapper.impl")
 public interface PhotosMapper extends EntityMapper<PhotosDTO, Photos> {
 	
-	@Mapping(target = "album", source = "photos.albumId.id")
+	@Mapping(target = "albumId", source = "album.id")
 	public PhotosDTO toDto(Photos photos);
 }

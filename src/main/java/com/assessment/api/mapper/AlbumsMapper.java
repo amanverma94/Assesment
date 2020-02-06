@@ -9,7 +9,7 @@ import com.assessment.api.entity.Albums;
 @Mapper(componentModel = "spring", implementationPackage = "com.assessment.api.mapper.impl")
 public interface AlbumsMapper{
 	
-	@Mapping(target = "user", source = "albums.userId.id")
+	@Mapping(target = "userId", source = "user.id")
 	public AlbumsDTO toDto(Albums albums);
 
 }

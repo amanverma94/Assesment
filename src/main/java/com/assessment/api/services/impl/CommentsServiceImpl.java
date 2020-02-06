@@ -46,8 +46,11 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public List<CommentsDTO> getCommentsByPostId(Integer postId) {
-		Posts post = postRepository.findById(postId).get();
-		Optional<List<Comments>> comments = commentsRepository.findByPostId(post);
+		Posts post = null != postId ? postRepository.findById(postId).get() : null;
+		if (null == post) {
+			return null;
+		}
+		Optional<List<Comments>> comments = commentsRepository.findByPost(post);
 		if (comments.isPresent()) {
 			return mapEntityListToDtoList(comments.get());
 		}
@@ -56,12 +59,18 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public CommentsDTO getCommentById(Integer id) {
+		if (null == id) {
+			return null;
+		}
 		Optional<Comments> comments = commentsRepository.findById(id);
 		return commentsMapper.toDto(comments.get());
 	}
 
 	@Override
 	public List<CommentsDTO> getCommentByName(String name) {
+		if (null == name) {
+			return null;
+		}
 		Optional<List<Comments>> comments = commentsRepository.findByName(name);
 		if (comments.isPresent()) {
 			return mapEntityListToDtoList(comments.get());
@@ -71,6 +80,9 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public List<CommentsDTO> getCommentByEmail(String email) {
+		if (null == email) {
+			return null;
+		}
 		Optional<List<Comments>> comments = commentsRepository.findByEmail(email);
 		if (comments.isPresent()) {
 			return mapEntityListToDtoList(comments.get());
@@ -80,6 +92,9 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public List<CommentsDTO> getCommentByBody(String body) {
+		if (null == body) {
+			return null;
+		}
 		Optional<List<Comments>> comments = commentsRepository.findByBody(body);
 		if (comments.isPresent()) {
 			return mapEntityListToDtoList(comments.get());
@@ -97,21 +112,27 @@ public class CommentsServiceImpl implements CommentsService {
 		comment.setBody(body);
 		comment.setEmail(email);
 		comment.setName(name);
-		Posts post = postRepository.findById(postId).get();
-		comment.setPostId(post);
+		if (null != postId) {
+			Posts post = postRepository.findById(postId).get();
+			comment.setPost(post);
+		}
 		commentsRepository.save(comment);
 	}
 
 	@Override
 	public void updateComment(Integer id, Integer postId, String name, String body, String email) {
-		Comments comment = commentsRepository.findById(id).get();
-		saveComment(postId, name, body, email, comment);
+		if (null != id) {
+			Comments comment = commentsRepository.findById(id).get();
+			saveComment(postId, name, body, email, comment);
+		}
 	}
 
 	@Override
 	public void deleteComment(Integer id) {
-		Comments comment = commentsRepository.findById(id).get();
-		commentsRepository.delete(comment);
+		if (null != id) {
+			Comments comment = commentsRepository.findById(id).get();
+			commentsRepository.delete(comment);
+		}
 	}
 
 }

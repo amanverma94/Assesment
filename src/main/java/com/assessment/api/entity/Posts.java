@@ -42,11 +42,11 @@ public class Posts implements Serializable {
     private String title;
     @Column(name = "body", length = 500)
     private String body;
-    @OneToMany(mappedBy = "postId")
+    @OneToMany(mappedBy = "post")
     private Collection<Comments> commentsCollection;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     @ManyToOne
-    private UserDetails userId;
+    private UserDetails user;
 
     public Posts() {
     }
@@ -88,12 +88,12 @@ public class Posts implements Serializable {
         this.commentsCollection = commentsCollection;
     }
 
-    public UserDetails getUserId() {
-        return userId;
+    public UserDetails getUser() {
+        return user;
     }
 
-    public void setUserId(UserDetails userId) {
-        this.userId = userId;
+    public void setUser(UserDetails user) {
+        this.user = user;
     }
 
     @Override
