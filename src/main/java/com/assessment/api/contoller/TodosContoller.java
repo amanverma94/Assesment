@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,12 +64,6 @@ public class TodosContoller {
 	@DeleteMapping
 	public void deleteTodo(@RequestParam Integer id) {
 		todosService.deleteTodo(id);
-	}
-	
-	@PatchMapping
-	public void patchTodo(@RequestParam Integer id, @RequestParam Integer userId, @RequestParam String title,
-			@RequestParam Boolean completed) {
-		todosService.updateTodo(id, userId, title, completed);
 	}
 
 }

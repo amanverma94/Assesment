@@ -1,6 +1,7 @@
 package com.assessment.api.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,16 +10,25 @@ import com.assessment.api.dto.AddressDTO;
 import com.assessment.api.dto.CompanyDTO;
 import com.assessment.api.dto.UserDetailsDTO;
 import com.assessment.api.entity.Address;
+import com.assessment.api.entity.Albums;
 import com.assessment.api.entity.Company;
 import com.assessment.api.entity.Geo;
+import com.assessment.api.entity.Posts;
+import com.assessment.api.entity.Todos;
 import com.assessment.api.entity.UserDetails;
 import com.assessment.api.mapper.AddressMapper;
 import com.assessment.api.mapper.CompanyMapper;
 import com.assessment.api.mapper.UserDetailsMapper;
 import com.assessment.api.repository.AddressRepository;
+import com.assessment.api.repository.AlbumsRepository;
 import com.assessment.api.repository.CompanyRepository;
 import com.assessment.api.repository.GeoRepository;
+import com.assessment.api.repository.PostsRepository;
+import com.assessment.api.repository.TodosRepository;
 import com.assessment.api.repository.UserDetailsRepository;
+import com.assessment.api.services.AlbumsService;
+import com.assessment.api.services.PostsService;
+import com.assessment.api.services.TodosService;
 import com.assessment.api.services.UserDetailService;
 
 @Service
@@ -34,7 +44,16 @@ public class UserDetailServiceImpl implements UserDetailService {
 	private GeoRepository geoRepository;
 
 	@Autowired
+	private AlbumsRepository albumsRepository;
+
+	@Autowired
+	private PostsRepository postRepository;
+
+	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private TodosRepository todosRepository;
 
 	@Autowired
 	private UserDetailsMapper userDetailsMapper;
@@ -44,6 +63,15 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 	@Autowired
 	private CompanyMapper companyMapper;
+
+	@Autowired
+	private AlbumsService albumsService;
+
+	@Autowired
+	private PostsService postsService;
+	
+	@Autowired
+	private TodosService todosService;
 
 	public UserDetails getUserDetailsByUserId(Integer userId) {
 		return userDetailsRepository.findById(userId).get();
@@ -196,6 +224,27 @@ public class UserDetailServiceImpl implements UserDetailService {
 	@Override
 	public void deleteUser(Integer userId) {
 		UserDetails userDetails = getUserDetailsByUserId(userId);
+		Optional<List<Albums>> albums = albumsRepository.findByUserId(userDetails);
+		if (albums.isPresent()) {
+			for (Albums album : albums.get()) {
+				albumsService.deleteAlbum(album.getId());
+			}
+		}
+
+		Optional<List<Posts>> posts = postRepository.findByUserId(userDetails);
+		if (albums.isPresent()) {
+			for (Posts post : posts.get()) {
+				postsService.deletePost(post.getId());
+			}
+		}
+		
+		Optional<List<Todos>> todos = todosRepository.findByUserId(userDetails);
+		if (todos.isPresent()) {
+			for (Todos todo : todos.get()) {
+				todosService.deleteTodo(todo.getId());
+			}
+		}
+		
 		userDetailsRepository.delete(userDetails);
 		if (null != userDetails.getCompany()) {
 			companyRepository.delete(userDetails.getCompany());

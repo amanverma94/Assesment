@@ -110,8 +110,8 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public void deleteComment(Integer id) {
-		Comments post = commentsRepository.findById(id).get();
-		commentsRepository.delete(post);
+		Comments comment = commentsRepository.findById(id).get();
+		commentsRepository.delete(comment);
 	}
 
 }

@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.assessment.api.dto.PostsDTO;
+import com.assessment.api.entity.Comments;
 import com.assessment.api.entity.Posts;
 import com.assessment.api.entity.UserDetails;
 import com.assessment.api.mapper.PostsMapper;
+import com.assessment.api.repository.CommentsRepository;
 import com.assessment.api.repository.PostsRepository;
 import com.assessment.api.services.PostsService;
 import com.assessment.api.services.UserDetailService;
@@ -20,6 +22,9 @@ public class PostsServiceImpl implements PostsService {
 
 	@Autowired
 	private PostsRepository postRepository;
+
+	@Autowired
+	private CommentsRepository commentsRepository;
 
 	@Autowired
 	private PostsMapper postsMapper;
@@ -101,6 +106,9 @@ public class PostsServiceImpl implements PostsService {
 	@Override
 	public void deletePost(Integer id) {
 		Posts post = postRepository.findById(id).get();
+		List<Comments> comment = commentsRepository.findByPostId(post).get();
+		commentsRepository.deleteAll(comment);
 		postRepository.delete(post);
+		
 	}
 }

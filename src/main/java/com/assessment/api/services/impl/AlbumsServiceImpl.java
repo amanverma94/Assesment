@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.assessment.api.dto.AlbumsDTO;
 import com.assessment.api.entity.Albums;
+import com.assessment.api.entity.Photos;
 import com.assessment.api.entity.UserDetails;
 import com.assessment.api.mapper.AlbumsMapper;
 import com.assessment.api.repository.AlbumsRepository;
+import com.assessment.api.repository.PhotosRepository;
 import com.assessment.api.services.AlbumsService;
 import com.assessment.api.services.UserDetailService;
 
@@ -20,6 +22,9 @@ public class AlbumsServiceImpl implements AlbumsService {
 
 	@Autowired
 	private AlbumsRepository albumsRepository;
+
+	@Autowired
+	private PhotosRepository photosRepository;
 
 	@Autowired
 	private AlbumsMapper albumsMapper;
@@ -92,8 +97,9 @@ public class AlbumsServiceImpl implements AlbumsService {
 	@Override
 	public void deleteAlbum(Integer id) {
 		Albums album = albumsRepository.findById(id).get();
+		List<Photos> photos = photosRepository.findByAlbumId(album).get();
+		photosRepository.deleteAll(photos);
 		albumsRepository.delete(album);
-
 	}
 
 }
