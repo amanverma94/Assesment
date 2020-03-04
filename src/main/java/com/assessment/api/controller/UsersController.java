@@ -1,4 +1,4 @@
-package com.assessment.api.contoller;
+package com.assessment.api.controller;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import com.assessment.api.services.UserDetailService;
 
 @RestController
 @RequestMapping(value = "/api/users/")
-public class UsersContoller {
+public class UsersController {
 
 	@Autowired
 	private UserDetailService userDetailService;

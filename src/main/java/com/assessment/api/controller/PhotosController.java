@@ -1,4 +1,4 @@
-package com.assessment.api.contoller;
+package com.assessment.api.controller;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.assessment.api.services.PhotosService;
 
 @RestController
 @RequestMapping(value = "/api/Photos/")
-public class PhotosContoller {
+public class PhotosController {
 
 	@Autowired
 	private PhotosService photosService;

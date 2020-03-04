@@ -1,4 +1,4 @@
-package com.assessment.api.contoller;
+package com.assessment.api.controller;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.assessment.api.services.TodosService;
 
 @RestController
 @RequestMapping(value = "/api/Todos/")
-public class TodosContoller {
+public class TodosController {
 
 	@Autowired
 	private TodosService todosService;

@@ -1,4 +1,4 @@
-package com.assessment.api.contoller;
+package com.assessment.api.controller;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.assessment.api.services.CommentsService;
 
 @RestController
 @RequestMapping(value = "/api/comments/")
-public class CommentsContoller {
+public class CommentsController {
 
 	@Autowired
 	private CommentsService commentsService;
