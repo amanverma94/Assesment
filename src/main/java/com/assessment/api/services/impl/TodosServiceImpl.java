@@ -38,9 +38,7 @@ public class TodosServiceImpl implements TodosService {
 
 	private List<TodosDTO> mapEntityListToDtoList(List<Todos> todos) {
 		List<TodosDTO> todosDTO = new ArrayList<TodosDTO>();
-		for (Todos todo : todos) {
-			todosDTO.add(todosMapper.toDto(todo));
-		}
+		todos.stream().map(todo -> todosMapper.toDto(todo)).forEach(todo -> todosDTO.add(todo));
 		return todosDTO;
 	}
 

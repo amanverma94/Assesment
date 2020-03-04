@@ -36,12 +36,10 @@ public class PhotosServiceImpl implements PhotosService {
 		return null;
 	}
 
-	private List<PhotosDTO> mapEntityToDtoList(List<Photos> Photos) {
-		List<PhotosDTO> commentsDTO = new ArrayList<PhotosDTO>();
-		for (Photos Photo : Photos) {
-			commentsDTO.add(photosMapper.toDto(Photo));
-		}
-		return commentsDTO;
+	private List<PhotosDTO> mapEntityToDtoList(List<Photos> photos) {
+		List<PhotosDTO> photosDTO = new ArrayList<PhotosDTO>();
+		photos.stream().map(photo -> photosMapper.toDto(photo)).forEach(photo -> photosDTO.add(photo));
+		return photosDTO;
 	}
 
 	@Override

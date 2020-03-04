@@ -10,11 +10,8 @@ import com.assessment.api.dto.AddressDTO;
 import com.assessment.api.dto.CompanyDTO;
 import com.assessment.api.dto.UserDetailsDTO;
 import com.assessment.api.entity.Address;
-import com.assessment.api.entity.Albums;
 import com.assessment.api.entity.Company;
 import com.assessment.api.entity.Geo;
-import com.assessment.api.entity.Posts;
-import com.assessment.api.entity.Todos;
 import com.assessment.api.entity.UserDetails;
 import com.assessment.api.mapper.AddressMapper;
 import com.assessment.api.mapper.CompanyMapper;
@@ -153,7 +150,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 		if (null == website) {
 			return null;
 		}
-		 Optional<UserDetails> userDetails = userDetailsRepository.findByWebsite(website);
+		Optional<UserDetails> userDetails = userDetailsRepository.findByWebsite(website);
 		if (userDetails.isPresent()) {
 			return userDetailsMapper.toDto(userDetails.get());
 		}
@@ -251,32 +248,21 @@ public class UserDetailServiceImpl implements UserDetailService {
 	@Override
 	public void deleteUser(Integer userId) {
 		UserDetails userDetails = getUserDetailsByUserId(userId);
-		Optional<List<Albums>> albums = albumsRepository.findByUser(userDetails);
-		if (albums.isPresent()) {
-			for (Albums album : albums.get()) {
-				albumsService.deleteAlbum(album.getId());
-			}
-		}
-
-		Optional<List<Posts>> posts = postRepository.findByUser(userDetails);
-		if (albums.isPresent()) {
-			for (Posts post : posts.get()) {
-				postsService.deletePost(post.getId());
-			}
-		}
-
-		Optional<List<Todos>> todos = todosRepository.findByUser(userDetails);
-		if (todos.isPresent()) {
-			for (Todos todo : todos.get()) {
-				todosService.deleteTodo(todo.getId());
-			}
-		}
-
-		userDetailsRepository.delete(userDetails);
-		if (null != userDetails.getCompany()) {
-			companyRepository.delete(userDetails.getCompany());
-		}
 		if (null != userDetails) {
+			albumsRepository.findByUser(userDetails).ifPresent(availableAlbum -> availableAlbum.stream()
+					.forEach(album -> albumsService.deleteAlbum(album.getId())));
+
+			postRepository.findByUser(userDetails).ifPresent(
+					availablePosts -> availablePosts.stream().forEach(post -> postsService.deletePost(post.getId())));
+
+			todosRepository.findByUser(userDetails).ifPresent(
+					availableTodo -> availableTodo.stream().forEach(todo -> todosService.deleteTodo(todo.getId())));
+
+			userDetailsRepository.delete(userDetails);
+			if (null != userDetails.getCompany()) {
+				companyRepository.delete(userDetails.getCompany());
+			}
+
 			if (null != userDetails.getAddress()) {
 				addressRepository.delete(userDetails.getAddress());
 				if (null != userDetails.getAddress().getGeo()) {

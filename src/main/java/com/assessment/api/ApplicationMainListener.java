@@ -1,8 +1,6 @@
 package com.assessment.api;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -112,17 +110,14 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 		System.out.println("Inserting Users data to database...");
 		ResponseEntity<UserDetailsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/users",
 				UserDetailsDTO[].class);
-		List<UserDetailsDTO> userDetailList = Arrays.asList(responseEntity.getBody());
-		for (UserDetailsDTO dto : userDetailList) {
+		Arrays.asList(responseEntity.getBody()).stream().forEach(dto -> {
 			UserDetails userDetails = userDetailsMapper.toEntity(dto);
-
 			Address adressEntity = saveAddress(dto);
 			userDetails.setAddress(adressEntity);
-
 			Company companyEntity = saveCompany(dto);
 			userDetails.setCompany(companyEntity);
 			userDetailsRepository.save(userDetails);
-		}
+		});
 		System.out.println("Users data inserted into database.");
 	}
 
@@ -155,15 +150,14 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 	private void savePostsToDB() {
 		System.out.println("Inserting Posts data to database...");
 		ResponseEntity<PostsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/posts", PostsDTO[].class);
-		List<PostsDTO> postsList = Arrays.asList(responseEntity.getBody());
-		for (PostsDTO obj : postsList) {
+		Arrays.asList(responseEntity.getBody()).stream().forEach(obj -> {
 			Posts posts = new Posts();
 			posts.setBody(obj.getBody());
 			posts.setTitle(obj.getTitle());
 			UserDetails userDetails = userDetailService.getUserDetailsByUserId(obj.getUserId());
 			posts.setUser(userDetails);
 			postRepository.save(posts);
-		}
+		});
 		System.out.println("Posts data inserted into database.");
 	}
 
@@ -171,20 +165,16 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 		System.out.println("Inserting Comments data to database...");
 		ResponseEntity<CommentsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/comments",
 				CommentsDTO[].class);
-		List<CommentsDTO> commentsList = Arrays.asList(responseEntity.getBody());
-		for (CommentsDTO commentDTO : commentsList) {
+		Arrays.asList(responseEntity.getBody()).stream().forEach(commentDTO -> {
 			Comments comments = new Comments();
 			comments.setBody(commentDTO.getBody());
 			comments.setEmail(commentDTO.getEmail());
 			comments.setName(commentDTO.getName());
 			if (null != commentDTO.getPostId()) {
-				Optional<Posts> post = postRepository.findById(commentDTO.getPostId());
-				if (post.isPresent()) {
-					comments.setPost(post.get());
-				}
+				postRepository.findById(commentDTO.getPostId()).ifPresent(post -> comments.setPost(post));
 			}
 			commentsRepository.save(comments);
-		}
+		});
 		System.out.println("Comments data inserted into database.");
 	}
 
@@ -192,14 +182,13 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 		System.out.println("Inserting Albums data to database...");
 		ResponseEntity<AlbumsDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/albums",
 				AlbumsDTO[].class);
-		List<AlbumsDTO> albumsList = Arrays.asList(responseEntity.getBody());
-		for (AlbumsDTO album : albumsList) {
+		Arrays.asList(responseEntity.getBody()).stream().forEach(album -> {
 			Albums albums = new Albums();
 			albums.setTitle(album.getTitle());
 			UserDetails userDetails = userDetailService.getUserDetailsByUserId(album.getUserId());
 			albums.setUser(userDetails);
 			albumsRepository.save(albums);
-		}
+		});
 		System.out.println("Albums data inserted into database.");
 	}
 
@@ -207,35 +196,30 @@ public class ApplicationMainListener implements ApplicationListener<ContextRefre
 		System.out.println("Inserting Photos data to database...");
 		ResponseEntity<PhotosDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/photos",
 				PhotosDTO[].class);
-		List<PhotosDTO> photosList = Arrays.asList(responseEntity.getBody());
-		for (PhotosDTO photosBO : photosList) {
+		Arrays.asList(responseEntity.getBody()).stream().forEach(photosBO -> {
 			Photos photos = new Photos();
 			photos.setTitle(photosBO.getTitle());
 			photos.setThumbnailUrl(photosBO.getThumbnailUrl());
 			photos.setUrl(photosBO.getUrl());
 			if (null != photosBO.getAlbumId()) {
-				Optional<Albums> album = albumsRepository.findById(photosBO.getAlbumId());
-				if (album.isPresent()) {
-					photos.setAlbum(album.get());
-				}
+				albumsRepository.findById(photosBO.getAlbumId()).ifPresent(album -> photos.setAlbum(album));
 			}
 			photosRepository.save(photos);
-		}
+		});
 		System.out.println("Photos data inserted into database.");
 	}
 
 	private void saveTodosToDB() {
 		System.out.println("Inserting Todos data to database...");
 		ResponseEntity<TodosDTO[]> responseEntity = restTemplate.getForEntity(externalAPI + "/todos", TodosDTO[].class);
-		List<TodosDTO> todosList = Arrays.asList(responseEntity.getBody());
-		for (TodosDTO todosBO : todosList) {
+		Arrays.asList(responseEntity.getBody()).stream().forEach(todosBO -> {
 			Todos todo = new Todos();
 			todo.setTitle(todosBO.getTitle());
 			todo.setCompleted(todosBO.getCompleted());
 			UserDetails userDetails = userDetailService.getUserDetailsByUserId(todosBO.getUserId());
 			todo.setUser(userDetails);
 			todosRepository.save(todo);
-		}
+		});
 		System.out.println("Todos data inserted into database.");
 	}
 

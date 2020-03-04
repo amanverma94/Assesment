@@ -43,9 +43,7 @@ public class PostsServiceImpl implements PostsService {
 
 	private List<PostsDTO> mapEntityListToDtoList(List<Posts> posts) {
 		List<PostsDTO> postDTO = new ArrayList<PostsDTO>();
-		for (Posts post : posts) {
-			postDTO.add(postsMapper.toDto(post));
-		}
+		posts.stream().map(post -> postsMapper.toDto(post)).forEach(post -> postDTO.add(post));
 		return postDTO;
 	}
 

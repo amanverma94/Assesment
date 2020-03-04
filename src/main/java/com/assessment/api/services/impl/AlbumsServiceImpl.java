@@ -43,9 +43,7 @@ public class AlbumsServiceImpl implements AlbumsService {
 
 	private List<AlbumsDTO> mapEntityListToDtoList(List<Albums> albums) {
 		List<AlbumsDTO> commentsDTO = new ArrayList<AlbumsDTO>();
-		for (Albums album : albums) {
-			commentsDTO.add(albumsMapper.toDto(album));
-		}
+		albums.stream().map(album -> albumsMapper.toDto(album)).forEach(album -> commentsDTO.add(album));
 		return commentsDTO;
 	}
 

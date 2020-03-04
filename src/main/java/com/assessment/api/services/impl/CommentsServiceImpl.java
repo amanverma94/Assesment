@@ -38,9 +38,7 @@ public class CommentsServiceImpl implements CommentsService {
 
 	private List<CommentsDTO> mapEntityListToDtoList(List<Comments> comments) {
 		List<CommentsDTO> commentsDTO = new ArrayList<CommentsDTO>();
-		for (Comments comment : comments) {
-			commentsDTO.add(commentsMapper.toDto(comment));
-		}
+		comments.stream().map(comment -> commentsMapper.toDto(comment)).forEach(comment -> commentsDTO.add(comment));
 		return commentsDTO;
 	}
 
